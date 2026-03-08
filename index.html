@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Game Puzzle</title>
+
+<style>
+body{
+font-family:Arial;
+text-align:center;
+background:#f0f0f0;
+}
+
+h2{
+margin-top:20px;
+}
+
+#puzzle{
+width:300px;
+margin:20px auto;
+display:grid;
+grid-template-columns:repeat(3,100px);
+grid-template-rows:repeat(3,100px);
+gap:5px;
+}
+
+.tile{
+background:#4CAF50;
+color:white;
+font-size:30px;
+display:flex;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+border-radius:10px;
+}
+
+.empty{
+background:#ddd;
+cursor:default;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+</style>
+
+</head>
+<body>
+
+<h2>🧩 Game Puzzle</h2>
+<p>Susun angka dari 1 sampai 8</p>
+
+<div id="puzzle"></div>
+
+<button onclick="shuffle()">🔀 Acak</button>
+
+<script>
+
+let tiles = [1,2,3,4,5,6,7,8,""];
+
+function render(){
+let puzzle = document.getElementById("puzzle");
+puzzle.innerHTML="";
+
+tiles.forEach((num,i)=>{
+let tile=document.createElement("div");
+
+tile.className="tile";
+
+if(num===""){
+tile.classList.add("empty");
+}else{
+tile.innerText=num;
+tile.onclick=()=>move(i);
+}
+
+puzzle.appendChild(tile);
+});
+}
+
+function move(i){
+
+let emptyIndex=tiles.indexOf("");
+
+let validMoves=[i-1,i+1,i-3,i+3];
+
+if(validMoves.includes(emptyIndex)){
+[tiles[i],tiles[emptyIndex]]=[tiles[emptyIndex],tiles[i]];
+render();
+checkWin();
+}
+
+}
+
+function shuffle(){
+tiles.sort(()=>Math.random()-0.5);
+render();
+}
+
+function checkWin(){
+let win=[1,2,3,4,5,6,7,8,""];
+if(JSON.stringify(tiles)===JSON.stringify(win)){
+setTimeout(()=>alert("🎉 akhirnya menang juga si kacung!"),100);
+}
+}
+
+render();
+
+</script>
+
+</body>
+</html>
